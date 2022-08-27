@@ -10,7 +10,7 @@ const userStore = useUserStore()
 userStore.win.top = false
 userStore.win.maxWin = false
 
-changeSize(userStore.win)
+changeSize(userStore)
 
 const changeWindo = () => {
     userStore.win.maxWin = !userStore.win.maxWin

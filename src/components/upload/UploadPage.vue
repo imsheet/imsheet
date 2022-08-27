@@ -13,8 +13,6 @@ const ImagesBoxRef = ref<any>(null)
 const refreshData = throttle(() => ImagesBoxRef.value.loadData(), 100)
 const handleScroll = (e: Event) => {
     const { scrollTop, clientHeight, scrollHeight } = e.target as Element
-    console.log(scrollTop, clientHeight, scrollHeight)
-    
     if (scrollTop + clientHeight > scrollHeight / 1.2) refreshData()
 }
 

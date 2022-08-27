@@ -64,7 +64,7 @@ export async function changeWin(is: any) {
 
 export async function changeSize(switchWin: any) {
   return ipcRenderer.on('mainWin-max', (e, status) => {
-    switchWin.maxWin = status
+    switchWin.win.maxWin = status
   })
 }
 export async function minimize() {
