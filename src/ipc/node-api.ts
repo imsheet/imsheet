@@ -62,9 +62,9 @@ export async function changeWin(is: any) {
   return ipcRenderer.invoke('changeWin', is)
 }
 
-export async function changeSize(switchWin: any) {
+export async function changeSize(userStore: any) {
   return ipcRenderer.on('mainWin-max', (e, status) => {
-    switchWin.win.maxWin = status
+    userStore.win.maxWin = status
   })
 }
 export async function minimize() {

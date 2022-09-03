@@ -126,14 +126,20 @@ export async function changeImagesState(state: number, key: string) {
 }
 
 export async function deleteImages() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const db = ImagesDB.Instance()!.open(fileName())
+        try {
+            const cloudDBhash = await queryCloudDBhash('images.db')
+            const localDBhash = await queryLocalDBHash(db)
+            if (cloudDBhash != localDBhash) await pullImagesDB()
+        } catch (err) { console.log(err) }
         db!.all(`select * from imsheet where image_state = 0`)!
-            .then((rows:any) => {
-                let size = 0, q = rows.map((v:any) => {
+            .then((rows: any) => {
+                if (!rows.length) return lastModifyHash(db).then(() => resolve('void'))
+                let size = 0, q = rows.map((v: any) => {
                     return size = size + (v.image_size || 1)
                 })
-                const path = rows.map((v:any) => ({ Key: v.image_path }))
+                const path = rows.map((v: any) => ({ Key: v.image_path }))
                 CosManager.Instance()!.delete(path).then(async () => {
                     await db!.run('delete from imsheet where image_state = 0')
                     await db!.run('VACUUM')
