@@ -36,8 +36,6 @@ SQLite 是一个无服务器、零配置的的轻量数据库，ImSheet 利用�
 
 ## 📦 下载 & 说明
 
-现仅支持 window，后续更新 mac，若mac有需求的小伙伴，也可以自行 build，代码都已开源。
-
 其他：基于 sqlite 无服务的解决方案，虽支持多端同步，但也存在缺陷，同一时间多地操作，仍然会导致存储冲突。所以仅仅适合个人使用。
 
 ImSheet Releases [Download](https://github.com/imsheet/imsheet/releases)
