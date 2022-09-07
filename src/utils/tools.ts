@@ -18,7 +18,8 @@ export function rename(role?: number): string {
         d = date.getDate(),
         o = new Date(y, m, d).getTime(),
         c = new Date().getTime() - o,
-        now = date.toLocaleDateString().replace(/\//g, ''),
+        m1 = m > 10 ? m + 1 : '0' + (m + 1),
+        now = y.toString() + m1 + (d > 10 ? d : '0' + d),
         r = Math.floor(Math.random() * (role || 56800235583)),
         toBaseC = toBase(c).toString(),
         toBaseR = toBase(r).toString()
