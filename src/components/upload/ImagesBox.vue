@@ -56,7 +56,7 @@ const tagType = (time: number): "info" | "success" | "warning" => {
 const tagCopy = (key: string) => {
     const f = userStore.format
     const exgText = f.active ? f.list[f.select].exgText : '%url'
-    const text = toExgText(exgText, key)
+    const text = toExgText(exgText, key, userStore.domain)
     clipboard.writeText(text)
     !f.active ? handleMenuOp(message) :
         handleMenuOp(message, f.list[f.select].name)
