@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron'
 import type { CosConfig } from 'src/cond/cloud.conf'
 
+ipcRenderer.on('mainDeBug', (e, l) => console.log(l))
+
 export async function getCosConfig() {
   return ipcRenderer.invoke('getCosConfig')
 }
@@ -51,6 +53,10 @@ export async function cosPush(fileSize: number, filePath: string, key: string, o
 
 export async function cosProgress(callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void) {
   return ipcRenderer.on('cosProgress', callback)
+}
+
+export async function toRefresh(callback) {
+  return ipcRenderer.on('toRefresh', callback)
 }
 
 export async function removeAllListeners() {

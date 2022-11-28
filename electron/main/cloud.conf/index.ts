@@ -1,15 +1,14 @@
 import fs from 'fs'
 import path from 'path'
-import Store from 'electron-store'
 import COS from 'cos-nodejs-sdk-v5'
 import { app } from 'electron'
+import { store } from '../store/index'
+import { getImageBuffer } from '../utils/tools'
 
 function toCosKey(key: string) {
     if (!key) return 'ImSheet/'
     return key.replace(/[\\\/]?([^\\\/]+)[\\\/]?/g, `$1/`)
 }
-
-const store = new Store({ encryptionKey: "aew-216-cec" })
 
 export function getCosConfig(): CosConfig {
     const fileName = path.resolve(app.getPath('userData'), 'images.db')
@@ -112,17 +111,18 @@ export class CosManager {
     }
 
     push(filePath: string, key: string, options?: { cb?: Function, headers?: CosHeaderOptions }): Promise<unknown> {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (!this.cos) return reject('cos is not instantiated yet')
             const rekey = options && options.headers && options.headers.key
+            const body = await getImageBuffer(filePath)
             this.cos.putObject({
                 Bucket: this.config.c.Bucket,
                 Region: this.config.c.Region,
                 Key: this.config.c.Dir ?
                     (toCosKey(this.config.c.Dir) + (rekey || key)) :
                     'ImSheet/' + (rekey || key),
-                Body: fs.createReadStream(filePath),
-                ContentLength: fs.statSync(filePath).size,
+                Body: body as Buffer,
+                ContentLength: (body as Buffer)?.length,
                 onProgress: function (progressData) {
                     const percent = progressData.percent
                     options && options.cb && options.cb({ percent, key })

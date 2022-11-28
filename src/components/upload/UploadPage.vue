@@ -6,6 +6,7 @@ import { ref } from 'vue'
 import { throttle } from '../../utils/tools'
 import { useUserStore } from '../../store/userStore'
 import { toExgText } from '../../utils/tools'
+import { toRefresh } from '../../ipc/node-api'
 
 const userStore = useUserStore()
 
@@ -15,6 +16,8 @@ const handleScroll = (e: Event) => {
     const { scrollTop, clientHeight, scrollHeight } = e.target as Element
     if (scrollTop + clientHeight > scrollHeight / 1.2) refreshData()
 }
+
+toRefresh(() => { ImagesBoxRef.value.refreshList() })
 
 const handleRefresh = () => {
     ImagesBoxRef.value.refreshList()

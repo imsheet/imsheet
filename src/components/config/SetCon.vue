@@ -36,11 +36,13 @@ const formValue = reactive<CosConfig>({
         Region: '',
         Domain: '',
         Dir: ''
-    }
+    },
+    user: {}
 })
 
 const save = () => {
     userStore.domain = formValue.c.Domain || ''
+    formValue.user = userStore.getState
     SaveConfig(message)
     setCosConfig(toRaw(formValue))
 }
