@@ -60,7 +60,10 @@ export default class ComCourirer {
       let url
       try {
         url = await this.transport(packs[i].path)
-      } catch (e) { console.log(e) }
+      } catch (e) { 
+        win!.webContents.send('mainDeBug', e)
+        setTimeout(() => this.state = 'free', 4000)
+       }
       this.packs[i].url = url as unknown as string
       if (url) win!.webContents.send('toRefresh', url)
       this.update(this.packs)
@@ -121,16 +124,19 @@ export default class ComCourirer {
 
 
 function parsePath(commandLine): boolean | ImagePack[] {
-  let isUpload = false
+  let isUpload = false, path
   const source: string[] = [], packs: ImagePack[] = []
 
   // check has --upload and parsePath
   commandLine && commandLine.forEach(key => {
     if (key === '--upload') isUpload = true
-    if ((/(gif|jpg|jpeg|png|webp|bmp)/i.test(key))) {
-      let path = !/^http/i.test(key) ?
-        key.replace(/[\\\/]?([^\\\/]+)[\\\/]?/g, `$1/`) : key + 'p'
-      source.push(path.slice(0, path.length - 1))
+    if (/^http/i.test(key)) {
+      path = key
+      source.push(path)
+    } else if ((/(gif|jpg|jpeg|png|webp|bmp)/i.test(key))) {
+      path = key.replace(/[\\\/]?([^\\\/]+)[\\\/]?/g, `$1/`)
+      path = path.slice(0, path.length - 1)
+      source.push(path)
     }
   })
 

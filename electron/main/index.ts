@@ -37,10 +37,9 @@ if (!app.requestSingleInstanceLock()) {
   setInterval(() => {
     const result = courirer.ready(process.argv)
     result === 'over' && (app.quit(), process.exit(0))
-  }, 1000)
+  }, 500)
   setTimeout(() => {
-    courirer.state = 'free'
-    console.log('upload err exit')
+    console.log('upload err. find the bug imSheet shift+ctrl+i ')
     app.quit(), process.exit(0)
   }, 5000)
 } else {

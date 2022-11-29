@@ -114,7 +114,8 @@ export class CosManager {
         return new Promise(async (resolve, reject) => {
             if (!this.cos) return reject('cos is not instantiated yet')
             const rekey = options && options.headers && options.headers.key
-            const body = await getImageBuffer(filePath)
+            let body
+            try { body = await getImageBuffer(filePath) } catch (e) { reject(e) }
             this.cos.putObject({
                 Bucket: this.config.c.Bucket,
                 Region: this.config.c.Region,
