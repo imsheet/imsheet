@@ -1,5 +1,5 @@
 export function toExgText(exgText: string, key: string, domain?: string) {
-    let url = domain ? key.replace(/([^\/]+)/, domain) : key
+    let url = domain ? key.replace(/^(?:https?:\/\/)?[^\/]+/, domain) : key
     if (!(/^http/.test(url))) url = 'https://' + url
     const value = exgText || '',
         exg = /([\S\s]*)%url([\S\s]*)/
