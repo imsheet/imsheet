@@ -121,9 +121,9 @@ if (!app.requestSingleInstanceLock()) {
   app.on('ready', async () => {
     ipcChannel()
     CosManager.Instance(getCosConfig())
-    globalShortcut.register('CommandOrControl+Shift+i', function () {
+    /* globalShortcut.register('CommandOrControl+Shift+i', function () {
       win!.webContents.openDevTools()
-    })
+    }) */
     const template = [
       {
         label: '菜单',
@@ -140,8 +140,7 @@ if (!app.requestSingleInstanceLock()) {
     ]
 
     const m = Menu.buildFromTemplate(template)
-    // Menu.setApplicationMenu(m)
-    Menu.setApplicationMenu(null)
+    Menu.setApplicationMenu(m)
   })
 
   app.on('window-all-closed', () => {

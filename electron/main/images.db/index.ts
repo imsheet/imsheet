@@ -58,7 +58,8 @@ export async function checkImagesDB(config: CosConfig) {
 
 export async function pullImagesDB() {
     return new Promise((resolve, reject) => {
-        CosManager.Instance().pull('images.db').then((data: COS.GetObjectResult) => {
+        CosManager.Instance().pull('images.db').then(res => {
+            const data = res as COS.GetObjectResult
             fs.writeFile(fileName(), data.Body, { flag: 'w' }, (err) => {
                 if (err) return console.error(err)
                 resolve('success')
@@ -166,8 +167,9 @@ function updateImagesDB(size_t: any, q?: number) {
 
 function lastModifyHash(db: any) {
     return new Promise((resolve, reject) => {
-        CosManager.Instance().push(fileName(), 'images.db').then((res: COS.HeadObjectResult) => {
-            const last_hash = res.ETag.replace(/"/g, '')
+        CosManager.Instance().push(fileName(), 'images.db').then(res => {
+            const data = res as COS.HeadObjectResult
+            const last_hash = data.ETag.replace(/"/g, '')
             db.run(`update imsheet_statistical set last_hash = "${last_hash}" where id = 1`)
                 .catch((err: any) => reject(err))
             resolve(last_hash)
@@ -177,8 +179,9 @@ function lastModifyHash(db: any) {
 
 function queryCloudDBhash(Key: string) {
     return new Promise((resolve, reject) => {
-        CosManager.Instance()!.head(Key).then((res: COS.HeadObjectResult) => {
-            resolve(res.ETag.replace(/"/g, ''))
+        CosManager.Instance()!.head(Key).then(res => {
+            const data = res as COS.HeadObjectResult
+            resolve(data.ETag.replace(/"/g, ''))
         }).catch((err: any) => reject(err))
     })
 }

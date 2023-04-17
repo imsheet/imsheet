@@ -39,12 +39,12 @@ export interface CosConfig {
 export class CosManager {
     cos: COS | undefined
     private _CONFIG: CosConfig | undefined
-    private static instance: CosManager | undefined
+    private static instance: CosManager
     private constructor(c: CosConfig) {
         this.config = c
     }
 
-    static Instance(c?: CosConfig): CosManager | undefined {
+    static Instance(c?: CosConfig): CosManager {
         if (!CosManager.instance && c) {
             CosManager.instance = new CosManager(c!)
         }
