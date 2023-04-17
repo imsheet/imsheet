@@ -1,12 +1,16 @@
 <script setup lang='ts'>
 import UploadFile from './UploadFile.vue'
 import ImagesBox from './ImagesBox.vue'
-import { NLayout } from 'naive-ui'
+import { NLayout, useMessage } from 'naive-ui'
 import { ref } from 'vue'
 import { throttle } from '../../utils/tools'
 import { useUserStore } from '../../store/userStore'
 import { toExgText } from '../../utils/tools'
 import { toRefresh } from '../../ipc/node-api'
+
+import { clipboard } from 'electron'
+import { uploadFinish, handleMenuOp, } from '../../model/ResModel'
+const message = useMessage()
 
 const userStore = useUserStore()
 
@@ -17,7 +21,14 @@ const handleScroll = (e: Event) => {
     if (scrollTop + clientHeight > scrollHeight / 1.2) refreshData()
 }
 
-toRefresh(() => { ImagesBoxRef.value.refreshList() })
+toRefresh((e, u) => {
+    ImagesBoxRef.value.refreshList()
+    uploadFinish(message)
+    const f = userStore.format
+    const exgText = f.active ? f.list[f.select].exgText : '%url'
+    clipboard.writeText(toExgText(exgText, u, userStore.domain))
+    handleMenuOp(message, f.list[f.select].name)
+})
 
 const handleRefresh = () => {
     ImagesBoxRef.value.refreshList()

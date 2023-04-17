@@ -40,6 +40,10 @@ export const uploadFail = (message: MessageApiInjection) => {
     return message.warning('上传失败')
 }
 
+export const uploading = (message: MessageApiInjection) => {
+    return message.info('上传中...')
+}
+
 export const uploadTypeError = (message: MessageApiInjection) => {
     return message.warning('格式不支持')
 }

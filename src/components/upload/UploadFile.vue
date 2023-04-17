@@ -5,10 +5,10 @@ import { UploadCustomRequestOptions } from 'naive-ui'
 import type { UploadInst } from 'naive-ui'
 import { CloudUpload as ArchiveIcon, } from '@vicons/ionicons5'
 import { cosPush, cosProgress, removeAllListeners } from '../../ipc/node-api';
-import { uploadFail, uploadFinish, uploadTypeError, uploadSizeError, handleMenuOp } from '../../model/ResModel'
+import { uploadFail, uploadFinish, uploadTypeError, uploadSizeError, handleMenuOp, uploading } from '../../model/ResModel'
 import { rename, toExgText } from '../../utils/tools'
 import { useUserStore } from '../../store/userStore'
-import { clipboard } from 'electron'
+import { clipboard, ipcRenderer } from 'electron'
 
 const emit = defineEmits(['refresh'])
 
@@ -27,6 +27,7 @@ function uploadCheckFinish(clear: () => void) {
     if (tmp.length == uploadList.length) {
         const f = userStore.format
         const exgText = f.active ? f.list[f.select].exgText : '%url'
+        console.log(exgText, 'exgText')
         const text = uploadList.map(v => toExgText(exgText, v.location!, userStore.domain))
         clipboard.writeText(text.join(''))
         !f.active ? handleMenuOp(message) :
@@ -79,6 +80,7 @@ const customRequest = ({
         uploadFinish(message)
         onFinish()
         removeAllListeners()
+        console.log(uploadList[0])
         uploadCheckFinish(upload.value!.clear)
     }).catch(err => {
         onError()
@@ -89,11 +91,45 @@ const customRequest = ({
     })
 }
 
+document.addEventListener("dragover", (event) => {
+    event.preventDefault();
+});
+
+document.addEventListener("drop", (event) => {
+    event.preventDefault();
+
+    const file = event.dataTransfer!.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+        const fileDataUrl = reader.result;
+        ipcRenderer.send('upload-image', fileDataUrl);
+    };
+    reader.readAsDataURL(file);
+});
+
+const dragOver = (e: DragEvent) => {
+    e.preventDefault()
+}
+const dragDrop = async (e: DragEvent) => {
+    e.preventDefault()
+    const file = e.dataTransfer!.files[0];
+    if (file.path) return
+    const reader = new FileReader();
+    reader.onload = () => {
+        const fileDataUrl = reader.result?.toString() || '';
+        if (fileDataUrl.startsWith('data:image/')) {
+            uploading(message)
+            ipcRenderer.send('upload-file', fileDataUrl);
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
 </script>
 
 
 <template>
-    <n-upload style="" ref="upload" multiple :max="5" :custom-request="customRequest">
+    <n-upload @dragover="dragOver" @drop="dragDrop" style="" ref="upload" multiple :max="5" :custom-request="customRequest">
         <n-upload-dragger
             style="overflow: hidden; height:30vh !important;max-height: 160px; display: flex; justify-content: center; flex-direction: column;">
             <div>
@@ -109,5 +145,4 @@ const customRequest = ({
 </template>
 
 
-<style>
-</style>
+<style></style>

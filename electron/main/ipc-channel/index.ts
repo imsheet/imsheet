@@ -1,8 +1,13 @@
-import { ipcMain, shell } from 'electron'
+import { ipcMain, shell, app } from 'electron'
 import { win } from '../index'
+import ComCourirer from '../transport/ComCourirer'
 import { getCosConfig, SetCosConfig, queryCosDB, CosManager, CosHeaderOptions } from '../cloud.conf'
 import type { CosConfig } from '../cloud.conf'
 import { toCosKey } from '../utils/tools'
+import path from 'path'
+import fs from 'fs'
+
+const courirer = new ComCourirer()
 
 import {
     changeImagesState,
@@ -101,4 +106,20 @@ export async function ipcChannel(): Promise<void> {
     })
     ipcMain.on('setWinSize', (e, w, h) => win.setSize(w, h, true))
     ipcMain.handle('getWinSize', () => win.getSize())
+
+    ipcMain.on('upload-file', (event, dataUrl) => {
+        
+        const matches = dataUrl.match(/^data:(.+);base64,(.*)$/)
+        const base64Data = matches[2]
+      
+        const buffer = Buffer.from(base64Data, 'base64')
+      
+        const filePath = path.join(app.getPath('userData'), 'tmp.png')
+      
+        fs.writeFile(filePath, buffer, (error) => {
+          if (error) return console.error(error)
+          courirer.addPack(['--upload', filePath.replace(/\\/g, '/')])
+          console.log(`File saved to ${filePath}`)
+        });
+      });
 }

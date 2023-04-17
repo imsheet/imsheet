@@ -23,6 +23,7 @@ export default class ComCourirer {
   // send if url, set end
   ready(commandLine) {
     const packs = parsePath(commandLine)
+    console.log(packs)
     const storePacks = store.get('packs') || []
     if ((storePacks as []).length) {
       let len = (storePacks as []).length
@@ -126,7 +127,7 @@ export default class ComCourirer {
 function parsePath(commandLine): boolean | ImagePack[] {
   let isUpload = false, path
   const source: string[] = [], packs: ImagePack[] = []
-
+  console.log(commandLine)
   // check has --upload and parsePath
   commandLine && commandLine.forEach(key => {
     if (key === '--upload') isUpload = true
