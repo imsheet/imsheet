@@ -1,0 +1,40 @@
+{
+  "name": "imsheet-tauri",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.5.0",
+    "@tauri-apps/plugin-clipboard-manager": "^2.2.2",
+    "@tauri-apps/plugin-dialog": "^2.2.1",
+    "@tauri-apps/plugin-fs": "^2.2.1",
+    "@tauri-apps/plugin-global-shortcut": "^2.2.0",
+    "@tauri-apps/plugin-http": "^2.4.3",
+    "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-shell": "^2.2.1",
+    "@tauri-apps/plugin-sql": "^2.2.0",
+    "cos-js-sdk-v5": "^1.8.7",
+    "dexie": "^4.0.11",
+    "localforage": "^1.10.0",
+    "mitt": "^3.0.1",
+    "naive-ui": "^2.32.1",
+    "pinia": "^2.0.17",
+    "vfonts": "^0.0.3",
+    "vue": "^3.5.13",
+    "vue-router": "^4.1.2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@vicons/ionicons5": "^0.12.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3",
+    "vue-tsc": "^2.1.10"
+  }
+}
