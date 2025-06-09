@@ -1,8 +1,6 @@
 # ImSheet
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/yamfeel/history/master/images202208150241351.png" alt="ImSheet Logo" width="120" height="120">
-</p>
+![](https://raw.githubusercontent.com/yamfeel/history/master/images202208150241351.png)
 
 <p align="center">
   <strong>一款简约直观的图床工具，无服务端轻松管理你的个人图像资产</strong>
@@ -13,7 +11,6 @@
   <img src="https://img.shields.io/badge/Vue-3.x-green?style=flat-square&logo=vue.js" alt="Vue">
   <img src="https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript" alt="TypeScript">
   <img src="https://img.shields.io/badge/Rust-1.70+-orange?style=flat-square&logo=rust" alt="Rust">
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License">
 </p>
 
 ---
@@ -103,13 +100,16 @@ git clone https://github.com/your-username/imsheet-tauri.git
 cd imsheet-tauri
 
 # 安装依赖
-npm install
+yarn
 
 # 开发模式运行
-npm run tauri dev
+yarn run tauri dev
 
 # 构建应用
-npm run tauri build
+# MacOS
+yarn run tauri build -- --bundles dmg
+# Win
+yarn run tauri build
 ```
 
 ### IDE 推荐配置
@@ -123,12 +123,11 @@ npm run tauri build
 
 ### 应用下载
 
-🔗 [最新版本下载](https://github.com/your-username/imsheet-tauri/releases)
+🔗 [最新版本下载](https://github.com/imsheet/imsheet/releases)
 
 支持平台：
 - 🪟 Windows (x64)
 - 🍎 macOS (Intel & Apple Silicon)
-- 🐧 Linux (x64)
 
 ### 配置说明
 
@@ -144,7 +143,7 @@ npm run tauri build
 
 ## ⚠️ 使用注意
 
-- 基于 SQLite 的无服务端方案虽支持多端同步，但**同一时间多地操作可能导致冲突**
+- 基于 SQLite 的无服务端方案虽支持多端同步，但**同一时间多地同时操作仍可能导致冲突**
 - **仅适合个人使用**，不建议多人共享同一配置
 - 建议定期备份配置文件和数据库
 
@@ -157,14 +156,6 @@ npm run tauri build
 3. 提交更改: `git commit -m 'Add amazing feature'`
 4. 推送分支: `git push origin feature/amazing-feature`
 5. 提交 Pull Request
-
-## 📄 开源协议
-
-本项目采用 [MIT License](LICENSE) 协议开源。
-
-## 🙏 致谢
-
-感谢所有为 ImSheet 项目做出贡献的开发者们！
 
 ---
 
